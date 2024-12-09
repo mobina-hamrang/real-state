@@ -19,6 +19,10 @@ class CreateFileFeaturesTable extends Migration
             $table->string('file_id');
             $table->string('value');
             $table->timestamps();
+
+            $table->foreign('feature_id')->references('feature_id')->on('features')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('file_id')->references('file_id')->on('files')->onDelete('cascade')->onUpdate('cascade');
+
         });
     }
 

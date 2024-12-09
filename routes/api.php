@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FeatureController;
 use App\Http\Controllers\File_featureController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\UiController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -33,6 +35,8 @@ Route::apiResources([
     '/file_feature' => File_featureController::class,
     '/file' => FileController::class,
     '/user' => UserController::class,
+    '/image' => ImageController::class,
+    '/comment'=> CommentController::class
 ]);
 
 Route::group([

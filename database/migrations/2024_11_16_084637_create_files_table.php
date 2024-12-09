@@ -24,6 +24,11 @@ class CreateFilesTable extends Migration
             $table->string('description');
             $table->string('image_id')->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('category_id')->references('category_id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('image_id')->references('image_id')->on('images')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

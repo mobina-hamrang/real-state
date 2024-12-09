@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -16,19 +15,35 @@ class CategoryController extends Controller
 
         $data = $categories->transform(function ($item) {
             return [
+                'category_id' => $item->category_id,
                 'title' => $item->title,
-//                'child' => $item->children() : $item->children() ? null,//->transform
-                //'parent' => $item->parent_id ? $item->parent->title : null,
-
+                'parent' => $item->parent ? $item->parent->title : null,
+                'parent_id' => $item->parent ? $item->parent->category_id : null,
+                'image' => $item->image ? $item->image->path : null,
+                'children' => $item->children ? $item->children->transform(function ($child){
+                    return [
+                        'category_id' => $child->category_id,
+                        'title' => $child->title
+                    ];
+                }) : null,
             ];
         });
 
-        return Category::all();
+        return response()->json($data);
+        //return Category::all();
     }
 
     public function store(Request $request)
     {
         $errors = [];
+        $data = [];
+
+        if($request->hasFile('image')) {
+            $upload = uploadThis($request->file('image'));
+            if($upload['success']) $data = array_merge($data, ['image_id'=> $upload['image_id']]);
+            else $errors = array_merge($errors, $upload['error']);
+        }
+
         $errors = array_merge($errors, Validator::make($request->all(), [
             'title' => 'required|string',
         ],[
@@ -36,15 +51,11 @@ class CategoryController extends Controller
         ])->errors()->jsonSerialize());
 
         if(!$errors) {
-            $data = [
+            $data = array_merge($data, [
                 'title' => $request->title,
                 'parent_id' => $request->parent_id
-            ];
-            if($request->hasFile('image')) {
-                $path = $request->file('image')->store('images');
-                $image = Image::create(['path' => $path]);
-                $data = array_merge($data, ['image_id'=> $image->image_id]);
-            }
+            ]);
+
             $category = Category::create($data);
 
             return response()->json([
@@ -60,6 +71,14 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $errors = [];
+        $data = [];
+
+        if($request->hasFile('image')) {
+            $upload = uploadThis($request->file('image'));
+            if($upload['success']) $data = array_merge($data, ['image_id'=> $upload['image_id']]);
+            else $errors = array_merge($errors, $upload['error']);
+        }
+
         $errors = array_merge($errors, Validator::make($request->all(), [
             'title' => 'required|string',
         ],[
@@ -67,15 +86,11 @@ class CategoryController extends Controller
         ])->errors()->jsonSerialize());
 
         if(!$errors) {
-            $data = [
+            $data = array_merge($data, [
                 'title' => $request->title,
                 'parent_id' => $request->parent_id
-            ];
-            if($request->hasFile('image')) {
-                $path = $request->file('image')->store('images');
-                $image = Image::create(['path' => $path]);
-                $data = array_merge($data, ['image_id'=> $image->image_id]);
-            }
+            ]);
+
             $category->update($data);
 
             return response()->json([

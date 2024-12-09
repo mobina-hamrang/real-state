@@ -14,6 +14,7 @@ class Image extends Model
     public $incrementing = false;
     protected $primaryKey = 'image_id';
     protected $fillable = [
+        'image_id',
         'path'
     ];
     public static function booted() {

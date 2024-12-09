@@ -17,9 +17,17 @@ class FileController extends Controller
     public function store(Request $request)
     {
         $errors = [];
+        $data = [];
+
+        if($request->hasFile('image')) {
+            $upload = uploadThis($request->file('image'));
+            if($upload['success']) $data = array_merge($data, ['image_id'=> $upload['image_id']]);
+            else $errors = array_merge($errors, $upload['error']);
+        }
+
         $errors = array_merge($errors, Validator::make($request->all(), [
             'category_id' => 'required|string|exists:categories',
-            'city_id' => 'required|string|exists:cities',
+            'city_id' => 'required|string|exists:cities,id',
             'title' => 'required|string',
             'address' => 'required|string',
             'location' => 'required|string',
@@ -38,20 +46,18 @@ class FileController extends Controller
         ])->errors()->jsonSerialize());
 
         if(!$errors) {
-        $path = $request->file('image')->store('images');
-        $image = Image::updateOrCreate(['path' => $path]);
+            $data = array_merge($data, [
+                'user_id' => $request->user_id,
+                'category_id' => $request->category_id,
+                'city_id' => $request->city_id,
+                'title' => $request->title,
+                'address' => $request->address,
+                'location' => $request->location,
+                'description' => $request->description
+            ]);
+            $file = File::create($data);
 
-        $file = File::create([
-            'user_id' => $request->user_id,
-            'category_id' => $request->category_id,
-            'city_id' => $request->city_id,
-            'title' => $request->title,
-            'address' => $request->address,
-            'location' => $request->location,
-            'description' => $request->description,
-            'image_id' => $image->image_id
-        ]);
-        return response()->json([
+            return response()->json([
             'status' => 'file created',
             'detail' => $file
         ]);
@@ -64,8 +70,16 @@ class FileController extends Controller
     public function update(Request $request, File $file)
     {
         $errors = [];
+        $data = [];
+
+        if($request->hasFile('image')) {
+            $upload = uploadThis($request->file('image'));
+            if($upload['success']) $data = array_merge($data, ['image_id'=> $upload['image_id']]);
+            else $errors = array_merge($errors, $upload['error']);
+        }
+
         $errors = array_merge($errors, Validator::make($request->all(), [
-            'city_id' => 'required|string|exists:cities',
+            'city_id' => 'required|string|exists:cities,id',
             'title' => 'required|string',
             'address' => 'required|string',
             'location' => 'required|string',
@@ -82,18 +96,13 @@ class FileController extends Controller
         ])->errors()->jsonSerialize());
 
         if(!$errors) {
-        $data = [
+            $data = array_merge($data, [
             'city_id' => $request->city_id,
             'title' => $request->title,
             'address' => $request->address,
             'location' => $request->location,
             'description' => $request->description
-        ];
-        if($request->hasFile('image')) {
-            $path = $request->file('image')->store('images');
-            $image = Image::updateOrCreate(['path' => $path]);
-            $data = array_merge($data, ['image_id'=> $image->image_id]);
-        }
+        ]);
 
         $file->update($data);
 

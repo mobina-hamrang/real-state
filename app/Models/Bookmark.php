@@ -4,29 +4,30 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 
-class Feature extends Model
+class Bookmark extends Model
 {
     use HasFactory;
     protected $keyType = 'string';
     public $incrementing = false;
-    protected $primaryKey = 'feature_id';
+
+    protected $primaryKey = 'bookmark_id';
+
     protected $fillable = [
-        'title',
-        'type',
-        'value'
+        'file_id',
+        'user_id',
+        'isBookmark'
     ];
     public static function booted() {
         static::creating(function ($model) {
-            $model->feature_id = Str::uuid();
+            $model->bookmark_id = Str::uuid();
         });
     }
 
-    public function file_features(): HasMany
+    public function file(): BelongsTo
     {
-        return $this->hasMany(File_feature::class, 'feature_id');
+        return $this->belongsTo(File::class, 'file_id');
     }
 }

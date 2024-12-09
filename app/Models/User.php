@@ -62,8 +62,8 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    public function session(): HasMany
+    public function sessions(): HasMany
     {
-        return $this->hasMany(Session::class, 'user_id');
+        return $this->hasMany(Session::class);
     }
 }

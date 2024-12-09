@@ -36,18 +36,20 @@ class File extends Model
     {
         return $this->belongsTo(Image::class, 'image_id');
     }
-
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
-
-    public function city(): HasOne
+    public function city(): BelongsTo
     {
-        return $this->hasOne(City::class, 'city_id');
+        return $this->belongsTo(City::class);
     }
     public function file_feature(): HasMany
     {
-        return $this->hasMany(File_feature::class, 'file_id');
+        return $this->hasMany(File_feature::class);
+    }
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
     }
 }

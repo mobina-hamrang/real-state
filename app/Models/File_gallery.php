@@ -13,7 +13,8 @@ class File_gallery extends Model
     public $incrementing = false;
     protected $primaryKey = 'file_gallery_id';
     protected $fillable = [
-        'direction'
+        'image_id',
+        'file_id'
     ];
     public static function booted() {
         static::creating(function ($model) {

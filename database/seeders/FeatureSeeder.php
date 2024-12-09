@@ -15,15 +15,19 @@ class FeatureSeeder extends Seeder
      */
     public function run()
     {
-        Feature::create(['title' => 'elevator', 'type'=>'static', 'value'=>'yes']);
-        Feature::create(['title' => 'elevator', 'type'=>'static', 'value'=>'no']);
-        Feature::create(['title' => 'garage', 'type'=>'static', 'value'=>'yes']);
-        Feature::create(['title' => 'garage', 'type'=>'static', 'value'=>'no']);
-        Feature::create(['title' => 'parking', 'type'=>'static', 'value'=>'yes']);
-        Feature::create(['title' => 'parking', 'type'=>'static', 'value'=>'no']);
+//        Feature::create(['title' => 'elevator', 'type'=>'static', 'value'=>'yes']);
+//        Feature::create(['title' => 'elevator', 'type'=>'static', 'value'=>'no']);
+//        Feature::create(['title' => 'garage', 'type'=>'static', 'value'=>'yes']);
+//        Feature::create(['title' => 'garage', 'type'=>'static', 'value'=>'no']);
+//        Feature::create(['title' => 'parking', 'type'=>'static', 'value'=>'yes']);
+//        Feature::create(['title' => 'parking', 'type'=>'static', 'value'=>'no']);
 
-//        File_feature::create(['feature_id' => $feature1->feature_id, 'value' => '1']);
-//        File_feature::create(['feature_id' => $feature2->feature_id, 'value' => '1']);
-//        File_feature::create(['feature_id' => $feature3->feature_id, 'value' => '1']);
+        Feature::create(['title' => 'آسانسور', 'type'=>'static', 'value'=>'yes']);
+        Feature::create(['title' => 'آسانسور', 'type'=>'static', 'value'=>'no']);
+        Feature::create(['title' => 'انباری', 'type'=>'static', 'value'=>'yes']);
+        Feature::create(['title' => 'انباری', 'type'=>'static', 'value'=>'no']);
+        Feature::create(['title' => 'پارکینگ', 'type'=>'static', 'value'=>'yes']);
+        Feature::create(['title' => 'پارکینگ', 'type'=>'static', 'value'=>'no']);
+
     }
 }

@@ -26,7 +26,11 @@ class Category extends Model
 //        });
 //    }
 
-    public function subCategory(): HasMany
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(Category::class, 'parent_id');
+    }
+    public function children(): HasMany
     {
         return $this->hasMany(Category::class, 'parent_id');
     }
@@ -36,7 +40,7 @@ class Category extends Model
         return $this->belongsTo(Image::class, 'image_id');
     }
 
-    public function file(): HasMany
+    public function files(): HasMany
     {
         return $this->hasMany(File::class, 'category_id');
     }

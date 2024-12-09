@@ -14,7 +14,7 @@ class CreateImagesTable extends Migration
     public function up()
     {
         Schema::create('images', function (Blueprint $table) {
-            $table->uuid('image_id')->primary();
+            $table->string('image_id')->primary();
             $table->string('path');
             $table->timestamps();
         });
